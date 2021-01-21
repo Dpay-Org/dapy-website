@@ -20,7 +20,7 @@
   <link href="//cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js">
-    
+
   </script>
 
 
@@ -77,16 +77,24 @@
         console.log(obj)
         axios.post('https://api.arisen.church/users/sendemail', obj)
           .then((result) => {
-            console.log(result)
-            if (result.data.status) {
-              window.location   = "success.html"
-            }else{
-              swal({ title: result.data.message, icon: 'warning' });
 
+            if(!result.data.status){
+              swal({ title: "This EmailID is not Valid.", icon: 'warning' });
+            }
+            else{
+              if(result.data.data.status == "subscribed"){
+                window.location = "success.html"
+
+              }
+              else{
+                swal({ title: "This mail already exists,Try with another one.", icon: 'warning' });
+              }
             }
           })
           .catch((err) => {
             console.log('=======>+', err)
+            swal({ title: "This mail already exists,Try with another one.", icon: 'warning' });
+
           })
 
 
